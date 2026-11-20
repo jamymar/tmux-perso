@@ -1,7 +1,7 @@
 # tmux-perso
 
 Configuration portable pour tmux (>= 3.2) avec **Catppuccin Macchiato**, TPM,
-CPU/RAM/GPU, nom du dossier courant, heure française (Europe/Paris) et souris.
+CPU/RAM/GPU (GPU NVIDIA si disponible), nom du dossier courant, heure française (Europe/Paris) et souris.
 Les raccourcis par défaut de tmux sont conservés (préfixe `Ctrl+B`).
 
 ## Installation sur un nouvel appareil
@@ -17,7 +17,7 @@ cd tmux-perso
 
 Remplace `TON-UTILISATEUR` par ton identifiant GitHub après avoir publié le dépôt.
 Le script sauvegarde une éventuelle configuration différente dans
-`~/.tmux.conf.backup.DATE`, installe `~/.tmux.conf`, TPM et ses deux plugins,
+`~/.tmux.conf.backup.DATE`, installe `~/.tmux.conf`, le script GPU, TPM et ses deux plugins,
 puis recharge tmux si un serveur existe. Il peut être relancé.
 
 ## Plugins
@@ -34,8 +34,7 @@ Catppuccin est épinglé sur `v2.3.2` pour une installation reproductible.
 - La souris permet le défilement et la sélection. La copie dans le presse-papiers
   système via OSC 52 dépend du terminal utilisé. `Ctrl+B` puis `]` colle depuis
   le buffer de tmux.
-- L'affichage GPU dépend de `nvidia-smi` (GPU NVIDIA) ; il peut être absent ou
-  indiquer « No GPU » sur les machines non prises en charge.
+- L'affichage GPU dépend de `nvidia-smi` (GPU NVIDIA) ; il est automatiquement masqué sur les machines non prises en charge.
 - Pour les icônes, utilise de préférence une Nerd Font.
 
 ## Publier le repo

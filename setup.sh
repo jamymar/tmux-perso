@@ -11,8 +11,10 @@ fail() { printf 'Erreur : %s\n' "$*" >&2; exit 1; }
 command -v git >/dev/null 2>&1 || fail "git est necessaire. Installe git puis relance ce script."
 command -v tmux >/dev/null 2>&1 || fail "tmux est necessaire (version >= 3.2). Installe tmux puis relance ce script."
 [[ -f "$REPO_DIR/tmux.conf" ]] || fail "tmux.conf introuvable a cote du script."
+[[ -f "$REPO_DIR/scripts/status-gpu.sh" ]] || fail "scripts/status-gpu.sh introuvable."
 
-mkdir -p "$PLUGINS_DIR"
+mkdir -p "$PLUGINS_DIR" "$HOME/.tmux-perso"
+install -m 755 "$REPO_DIR/scripts/status-gpu.sh" "$HOME/.tmux-perso/status-gpu.sh"
 
 # Idempotence : ne remplacer la configuration que si elle differe.
 if [[ -f "$CONFIG" ]] && ! cmp -s "$REPO_DIR/tmux.conf" "$CONFIG"; then
@@ -49,6 +51,9 @@ clone_if_missing 'https://github.com/tmux-plugins/tpm.git' "$PLUGINS_DIR/tpm"
 clone_if_missing 'https://github.com/catppuccin/tmux.git' "$PLUGINS_DIR/tmux" 'v2.3.2'
 clone_if_missing 'https://github.com/tmux-plugins/tmux-cpu.git' "$PLUGINS_DIR/tmux-cpu"
 
+# La config definit les plugins; ils sont deja presents apres les clones.
+# TPM les rechargera lors du source-file ou du prochain demarrage.
+
 if [[ -n "${TMUX:-}" ]]; then
   log "Rechargement de la configuration dans tmux"
   tmux source-file "$CONFIG"
@@ -65,6 +70,6 @@ Installation terminee !
 - Lance : tmux
 - Plugins : Ctrl+B puis I (majuscule) pour installer/actualiser via TPM
 - Mise a jour des plugins : Ctrl+B puis U (majuscule)
-- GPU : le plugin tmux-cpu requiert nvidia-smi (NVIDIA) pour afficher son activite.
+- GPU : indicateur masque si nvidia-smi est absent ou inaccessible.
 - Presse-papiers : OSC 52 doit etre pris en charge par ton terminal.
 MESSAGE
